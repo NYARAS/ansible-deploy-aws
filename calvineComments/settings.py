@@ -149,12 +149,12 @@ CORS_ORIGIN_WHITELIST = (
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles_cdn', 'static_cdn')
+# STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles_cdn', 'static_cdn')
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles_cdn', 'media_cdn')
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles_cdn', 'media_cdn')
