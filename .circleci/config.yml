@@ -1,0 +1,206 @@
+# version: 2
+# jobs:
+#   build:
+#     docker:
+#       - image: circleci/python:3.6
+#       - image: google/cloud-sdk:alpine
+#     working_directory: ~/workspace
+#     environment:
+#       DEPLOYMENT_NAME: gce-calvine
+#       PROJECT_ID: ansible-gce-demo-247311
+#       CLUSTER_NAME: ansible-gce-demo
+#       CLUSTER_NAME_STAG: ansible-calvine-demo-stag
+#       CLOUDSDK_COMPUTE_ZONE: us-central1-c	
+#       CONTAINER_NAME: ansible-gce-demo-247311
+#       IMAGE: node-app
+#       REG_ID: ansible-gce-demo
+#       REG_ID_PROD: ansible-gce-demo-prod
+#       IMG_TAG: 0.0.2
+#       PROJECT_NAME: ansible-gce-demo
+#       DEPLOYMENT_ENVIRONMENT: staging
+#     dependencies:
+#       pre:
+#         - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0
+#         - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0 kubectl
+
+
+#     steps:
+#       - checkout
+#       - setup_remote_docker
+#       - restore_cache:
+#           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+
+     
+      
+          
+
+#       - run:
+#           command: |
+#             python -m virtualenv venv  
+#             source venv/bin/activate
+#             pip3 install -r requirements.txt
+#             # sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0
+#             # sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update --version 120.0.0 kubectl
+#             # sudo apt-get install google-cloud-sdk
+            
+            
+      
+#       - save_cache:
+#           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+#           paths:
+#             - "venv"
+#       - run:
+#           name: Running tests
+#           command: |
+#             . venv/bin/activate
+#             coverage run --source='.' manage.py test
+#             coverage report
+      
+#       - run:
+#           name: Build and Deploy
+#           command: |
+#             if [ "${CIRCLE_BRANCH}" == "master" ]; then
+#               ./deployment.sh
+#             fi  
+  
+
+# version: 2
+# jobs:
+#   build:
+#     docker:
+#       - image: circleci/python:3.6
+#     working_directory: ~/workspace
+#     environment:
+#       DEPLOYMENT_NAME: gce-calvine
+#       PROJECT_ID: ansible-gce-demo-247311
+#       CLUSTER_NAME: ansible-gce-demo
+#       CLUSTER_NAME_STAG: ansible-calvine-demo-stag
+#       CLOUDSDK_COMPUTE_ZONE: us-central1-c	
+#       CONTAINER_NAME: ansible-gce-demo-247311
+#       IMAGE: node-app
+#       REG_ID: ansible-gce-demo
+#       REG_ID_PROD: ansible-gce-demo-prod
+#       IMG_TAG: 0.0.2
+#       PROJECT_NAME: ansible-gce-demo
+#       DEPLOYMENT_ENVIRONMENT: staging
+#     steps:
+#       - checkout
+#       - setup_remote_docker
+#       - restore_cache:
+#           keys:
+#           - v1-dependencies-{{ checksum "requirements.txt" }}
+#           - v1-dependencies-
+
+#       - run:
+#           command: |
+#             python -m virtualenv venv  
+#             source venv/bin/activate
+#             pip3 install -r requirements.txt
+      
+#       # - run:
+#       #     name: Start app
+#       #     command: |
+#       #       ./manage.py runserver
+#       - run:
+#           name: Running tests
+#           command: |
+#             . venv/bin/activate
+#             coverage run --source='.' manage.py test
+#             coverage report
+
+#       - restore_cache:
+#           keys:
+#           - v1-dependencies-{{ checksum "requirements.txt" }}
+#           - v1-dependencies-
+
+#       - save_cache:
+#           paths:
+#             - "venv"
+#           key: v1-dependencies-{{ checksum "requirements.txt" }}
+      
+#       - run:
+#           name: Build and Deploy
+#           command: |
+#             if [ "${CIRCLE_BRANCH}" == "master" ]; then
+#               ./deployment.sh
+#             fi  
+
+
+#should always start with a version number
+version: 2
+
+# jobs refer to a single execution of the build
+jobs:
+  # build is the name of the job....they can be multiple and unique
+  build:
+    # builds occur in a docker container
+    docker:
+      - image: circleci/python:3.7
+      # - image: njogu487/ubuntu1804:latest
+    environment:
+      - ANSIBLE_HOST_KEY_CHECKING: False
+    working_directory: ~/repo
+
+    # series/ list of steps done for the build
+    steps:
+      # Step 1: obtain repo from GitHub
+      - checkout
+      # Step 2: create virtual env and install dependencies
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install --upgrade pip
+            pip install -r requirements.txt
+            sudo apt install rsync
+      # # Step 3: run linter and tests
+      # - run:
+      #     name: run tests
+      #     command: |
+      #       . venv/bin/activate
+      #       cd locallib
+      #       coverage run --source="." manage.py test
+      #       coverage report 
+      #       coverage html
+      # #deploying to pypi
+      # - run:
+      #     name: verify git tag vs. version
+      #     command: |
+      #       python3 -m venv venv
+      #       . venv/bin/activate
+          #  python setup.py verify
+
+      # - run:
+      #     name: init .pypirc
+      #     command: |
+      #       echo -e "[pypi]" >> ~/.pypirc
+      #       echo -e "username = njogu487" >> ~/.pypirc
+      #       echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc      
+
+      # - run:
+      #     name: create packages
+      #     command: |
+      #       python3 setup.py sdist bdist_wheel
+      #      # python setup.py sdist
+
+      # - run:
+      #     name: upload to pypi
+      #     command: |
+      #       . venv/bin/activate
+      #       pip install twine
+      #       twine upload dist/*
+      
+      - add_ssh_keys:
+          fingerprints:
+              - "42:1d:a9:48:9d:65:98:81:77:8e:0d:56:f1:04:3c:25"
+      # - run:
+          # name: Make remote server a known host
+          # command: ssh-keyscan josephdevs.duckdns.org >> ~/.ssh/known_hosts 
+      - run:
+          name: executing ansible to a remote server
+          command: |
+            . venv/bin/activate
+            pip install ansible
+            ansible/ansible-playbook -i hosts deploy.yml 
+  

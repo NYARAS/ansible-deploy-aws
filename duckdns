@@ -1,0 +1,14 @@
+	server {
+
+
+        server_name 35.225.188.247 ;
+
+        location /static/ {
+                root /home/calvine/calvineComments;
+}
+
+        location / {
+                include proxy_params;
+                proxy_pass http://unix:/home/calvine/calvineComments/calvineComments.sock;
+        }
+}

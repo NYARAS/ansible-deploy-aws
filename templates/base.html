@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Reusable Comments</title>
+
+    {% include 'base/css.html' %}
+    {% include 'base/bootstrap_defaults.html' %}
+
+    
+
+
+    <link rel='stylesheet' href='{% static "comments/css/calvo.comments.css" %}' />
+    <link rel='stylesheet' href='{% static "comments/css/search.css" %}' />
+  <body>
+    <div class='container'>
+    {% block content %}
+    {% endblock content %}
+    </div>
+    {% include 'base/js.html' %}
+
+    
+
+
+
+    <script src='{% static "comments/js/cfe.safeajax.js" %}'></script>
+    <script src='{% static "comments/js/cfe.comments.js" %}?v=137'></script>
+
+    
+
+
+
+
+    <script>
+      $(document).ready(function(){
+        {% block jquery %}{% endblock %}
+      })
+    </script>
+  </body>
+</html>
