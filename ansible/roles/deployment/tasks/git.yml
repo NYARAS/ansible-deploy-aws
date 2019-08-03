@@ -8,7 +8,7 @@
   become: yes
   become_user: "{{ deployer_user }}"
   git:
-    repo: "https://{{ githubuser | urlencode }}:{{ githubpassword | urlencode }}@github.com/NYARAS/Django-k8-CI-CD-TEST.git"
+    repo: "https://{{ githubuser | urlencode }}:{{ githubpassword | urlencode }}@github.com/NYARAS/AWS-TEST.git"
     dest: "{{ app_dir }}"
 
 - name: Recursively change ownership of a directory

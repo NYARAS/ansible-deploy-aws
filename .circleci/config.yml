@@ -202,5 +202,5 @@ jobs:
           command: |
             . venv/bin/activate
             pip install ansible
-            ansible/ansible-playbook -i hosts deploy.yml 
+            ansible-playbook ansible/deploy.yml  -i ansible/hosts
   
