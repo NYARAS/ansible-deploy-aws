@@ -1,15 +1,15 @@
-# - name: start gunicorn
-#   shell: |
-#     . /home/ubuntu/calvine/envs/calvineComments/bin/activate
-#     cd /home/ubuntu/calvine/calvineComments
-#     gunicorn --daemon --workers 3 --bind unix:/home/ubuntu/calvine/calvineComments/calvineComments.sock calvineComments.wsgi
-#   become: "yes"
-# - name: Recursively change ownership of a directory
-#   file:
-#     path: /home/ubuntu/calvine/calvineComments
-#     state: directory
-#     recurse: yes
-#     owner: calvine
-#   become: "yes"
+- name: start gunicorn
+  shell: |
+    . /home/ubuntu/calvine/envs/calvineComments/bin/activate
+    cd /home/ubuntu/calvine/calvineComments
+    gunicorn --daemon --workers 3 --bind unix:/home/ubuntu/calvine/calvineComments/calvineComments.sock calvineComments.wsgi
+  become: "yes"
+- name: Recursively change ownership of a directory
+  file:
+    path: /home/ubuntu/calvine/calvineComments
+    state: directory
+    recurse: yes
+    owner: calvine
+  become: "yes"
    
 
