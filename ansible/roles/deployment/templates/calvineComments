@@ -1,7 +1,7 @@
 server {
     listen [::]:80 default_server;
     listen 80 default_server;
-    server_name alego.duckdns.org www.alego.duckdns.org ;
+    server_name calvineotienotest.duckdns.org  www.calvineotienotest.duckdns.org;
     # server_name 18.219.38.123;
     location = /favicon.ico { access_log off; log_not_found off; }
 
