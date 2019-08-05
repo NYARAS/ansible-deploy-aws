@@ -4,70 +4,92 @@
 
 [![CircleCI](https://circleci.com/gh/NYARAS/Resuseable-Comments-CI.svg?style=svg)](https://circleci.com/gh/NYARAS/Resuseable-Comments-CI)
 
-## Differences
+Calvine Comments
+A reusable Django & Javascript app (jQuery) for simply implementing a comments feed on any url.
 
-Expressing my authorial rights, some things are a bit different from the tutorial:
+Quick start
+Install Calvine Comments & Dependancies:
 
-- A `Log in` and `Log out` links on the page header
-- A `Back` link within the *blog-detail* and *blog-edit* pages
-- A more extensive `.gitignore` file
-- A `.editorconfig` file
-- An additional python package in the requirements.txt: `pycodestyle`
+pip install django-calvo-comments django djangorestframework django-cors-headers
+Add "comments" to your INSTALLED_APPS setting like this:
 
-- Within `mysite/settings.py`,
+INSTALLED_APPS = [
+    ...
+    'corsheaders', 
+    'rest_framework',
+    'comments',
+]
+Implement Django Dependancy Settings:
 
-  - Use of `Africa/Nairobi` as my *TIME_ZONE*
-  - Use of `en-us` as my *LANGUAGE_CODE*
-  - Addition of `0.0.0.0` and `.herokuapp.com` to the *ALLOWED_HOSTS* list
+Django Rest Framework
+Django Cors Headers
+Such as:
 
-## Setup
+MIDDLEWARE = [
+    ...
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    ...
+]
 
-In a python virtual environment, run:
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    )
+}
 
-- `pip install -r requirements.txt`
-- `python manage.py migrate blog`
-- `python manage.py createsuperuser` (to create user that you'll use to log in)
 
-### Run the application
 
-```bash
-python manage.py runserver
-```
+CORS_URLS_REGEX = r'^/api.*'
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    '*',
+)
 
-Now, you are good to go. Your blog is ready.
+Add the following to ROOT_URLCONF:
 
-### Test
+from django.conf.urls import url, include
+urlpatterns = [
+    ...
+    url(r'^api/comments/', include('comments.api.urls')),
+]
+Add jQuery and Bootstrap(recommended):
 
-```bash
-python manage.py test
-```
+<!-- jQuery Required -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-### Docker
-NB: The app instance will run off the a preset admin user as set in [init.sh](/init.sh).
+<!-- Bootstrap JS Recommeded -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-To spin up the application using docker, ensure that Docker is installed. Then run:
+<!-- Bootstrap CSS Recommeded -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+Add Srvup.Comments.js:
 
-```bash
-docker-compose up
-```
+{% load static %} 
 
-Or in detached mode:
+<!-- Primary Static files -->
+<script src='{% static "comments/js/srvup.comments.js" %}'></script>
 
-```bash
-docker-compose up -d
-```
+<!-- CSRF Safe For Ajax -->
+<script src='{% static "comments/js/srvup.safeajax.js" %}'></script>
+Run Django Commands:
 
-The application will be live at [0.0.0.0:8000](0.0.0.0:8000)
+python manage.py makemigrations
 
-### Log in/ out
+python manage.py migrate
+Use!
 
-- Click on `Log in` (you'll be redirected to the Admin page)
-- On the admin page, fill in the credentials of the superuser created in [Setup](#setup)
-- Click on the *Log in* button (You'll be redirected back to the page)
-- Click on `Log out` to log out.
+<div class='srvup-load-comments' data-url='{{ request.build_absolute_uri }}'></div>
+Customize:
 
-### Blog entry
-
-- Log in
-- Click on the `+` button, enter the _**title**_ and _**text**_
-- Finally hit the `Save` button
+<div class='srvup-load-comments' data-url='/any/path/' data-login='/accounts/login/' data-api-endpoint='/api/comments/'></div>
+data-url: Any url path you want your comments to load for that path
