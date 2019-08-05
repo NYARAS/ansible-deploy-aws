@@ -6,7 +6,7 @@ jobs:
   build:
     # builds occur in a docker container
     docker:
-      - image: circleci/python:3.7
+      - image: circleci/python:3.6
       
     environment:
       - ANSIBLE_HOST_KEY_CHECKING: False
@@ -31,8 +31,9 @@ jobs:
           command: |
             . venv/bin/activate
           
-            coverage run --source="." manage.py test
-            coverage report 
+            coverage run  --branch --source='.' manage.py test
+            coverage report --fail-under=80
+            
             coverage html
       #deploying to pypi
       - run:
