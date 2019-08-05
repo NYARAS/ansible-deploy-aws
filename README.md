@@ -5,7 +5,7 @@
 [![CircleCI](https://circleci.com/gh/NYARAS/Resuseable-Comments-CI.svg?style=svg)](https://circleci.com/gh/NYARAS/Resuseable-Comments-CI)
 
 Calvine Comments
-A reusable Django & Javascript app (jQuery) for simply implementing a comments feed on any url.
+A reusable Django & Javascript app (jQuery) for simply implementing a comments feed on any url(s).
 
 Quick start
 Install Calvine Comments & Dependancies:
