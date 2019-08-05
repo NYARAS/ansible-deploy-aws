@@ -61,7 +61,7 @@ jobs:
               - "9b:27:c9:d9:9f:ce:ea:fb:38:fd:3f:ea:f4:f8:5b:d4"
      
       - run:
-          name: executing ansible to a remote server
+          name: executing ansible to AWS server
           command: |
             . venv/bin/activate
             pip install ansible

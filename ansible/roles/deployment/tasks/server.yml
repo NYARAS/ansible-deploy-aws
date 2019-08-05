@@ -38,6 +38,8 @@
       - libffi-dev
       - python3-dev
       - python3-venv
+      - redis-server
+      - rabbitmq-server
   become: yes
 
 - name: create web directory
