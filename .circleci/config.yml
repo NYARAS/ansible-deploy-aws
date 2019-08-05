@@ -35,13 +35,6 @@ jobs:
             coverage report --fail-under=80
             
             coverage html
-      #deploying to pypi
-      - run:
-          name: verify git tag vs. version
-          command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            python setup.py verify
 
       - run:
           name: init .pypirc
