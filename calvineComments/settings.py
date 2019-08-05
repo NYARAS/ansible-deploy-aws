@@ -27,6 +27,24 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 LOGIN_URL = '/another/login/'
+LOGIN_REDIRECT_URL = 'api/comments/'
+
+
+# BASE_URL = 'https://dev.pinoylearnpython.com/'
+
+# For app labels section here
+# APP_LABEL_MYROOT = 'myroot'
+
+# Common Site Information here
+SITE_SHORT_NAME = "{{ PLP }}"
+SITE_FULL_NAME = "Calvine Comments"
+SITE_YEAR_STARTED = "2019"
+# SITE_URL_HOME = "https://pinoylearnpython.com"
+SITE_SLOGAN = SITE_FULL_NAME + " - A reusable comments!"
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='281258988459-v6urldnn613l1kl1pptcun5t2cc746rg.apps.googleusercontent.com'  #Paste CLient Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'AMhcZwxNgNbtS4LyYHN6a0bZ' #Paste Secret Key
 
 
 # Application definition
@@ -43,6 +61,8 @@ INSTALLED_APPS = [
     'rest_framework', # http://www.django-rest-framework.org/
     'comments',
     'search',
+    'main',
+    'social_django',
     'django_prometheus',
 ]
 
@@ -55,6 +75,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'calvineComments.urls'
@@ -70,10 +91,24 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                
+                'social_django.context_processors.backends',  # <- Here
+                'social_django.context_processors.login_redirect', # <- Here
             ],
         },
     },
 ]
+
+
+AUTHENTICATION_BACKENDS = (
+ 'social_core.backends.open_id.OpenIdAuth',  # for Google authentication
+ 'social_core.backends.google.GoogleOpenId',  # for Google authentication
+ 'social_core.backends.google.GoogleOAuth2',  # for Google authentication
+ 'social_core.backends.github.GithubOAuth2',  # for Github authentication
+ 'social_core.backends.facebook.FacebookOAuth2',  # for Facebook authentication
+ 
+ 'django.contrib.auth.backends.ModelBackend',
+)
 
 WSGI_APPLICATION = 'calvineComments.wsgi.application'
 
@@ -148,6 +183,20 @@ CORS_ORIGIN_WHITELIST = (
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+AUTH_USER_MODEL = 'main.User'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'calvineotieno010@gmail.com'
+EMAIL_HOST_PASSWORD = '0716862585'
+EMAIL_PORT = 587
+
+# REDIS related settings 
+REDIS_HOST = 'localhost'
+REDIS_PORT = '6379'
+BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600} 
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static'),

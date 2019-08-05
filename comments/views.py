@@ -5,6 +5,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Post, CommentPost
 from .forms import PostForm, CommentPostForm
+from .models import Post
+
+from django.http import Http404
 
 # Create your views here.
 
@@ -72,3 +75,18 @@ def post_edit(request, pk):
 #         if getattr(request.user, 'first_name', None) == 'Martin':
 #             raise Http404()
 #         return super(PostUpdateView, self).post(request, *args, **kwargs)
+
+
+
+ 
+ 
+def view_post(request, slug):
+    try:
+        post = Post.objects.get(slug=slug)
+    except Post.DoesNotExist:
+        raise Http404("Poll does not exist")
+     
+    post.view_count += 1
+    post.save()
+ 
+    return render(request, 'post.html', context={'post': post})

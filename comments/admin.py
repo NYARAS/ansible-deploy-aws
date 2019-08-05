@@ -10,15 +10,15 @@ from .models import Comment, Post,CommentPost
 
 # Register your models here.
 
-class PostAdmin(admin.ModelAdmin):
-    model = models.Post
-    list_display = ('excerpt',)
+# class PostAdmin(admin.ModelAdmin):
+#     model = models.Post
+#     list_display = ('excerpt',)
 
-    def excerpt(self, obj):
-        return obj.get_excerpt(5)
+#     def excerpt(self, obj):
+#         return obj.get_excerpt(5)
 
 
 admin.site.register(Comment)
 
 admin.site.register(models.CommentPost)
-admin.site.register(models.Post,PostAdmin)
+admin.site.register(models.Post)

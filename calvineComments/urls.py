@@ -17,6 +17,8 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.generic import TemplateView
 from search import views as search_views 
+from comments.views import view_post
+from main.views import home, verify
 
 from .views import LoginUrlTestTemplateView
 urlpatterns = [
@@ -24,9 +26,12 @@ urlpatterns = [
     url(r'^1234/$', LoginUrlTestTemplateView.as_view(template_name="home.html")),
     url(r'^admin/', admin.site.urls),
     url(r'^api/comments/', include('comments.api.urls')),
-    # url('', include('django_prometheus.urls')),
+    url('', include('django_prometheus.urls')),
     url('comments/', include('comments.urls')),
+    url(r'^(?P<slug>[a-zA-Z0-9\-]+)', view_post, name='view_post'),
+    url(r'^verify/(?P<uuid>[a-z0-9\-]+)/', verify, name='verify'),
     url(r'^search/', search_views.search, name='search'),
+    url(r'^auth/', include('social_django.urls', namespace='social')),  # <- Here
 ]
 
 

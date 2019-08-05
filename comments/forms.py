@@ -19,3 +19,7 @@ class CommentPostForm(forms.ModelForm):
     class Meta:
         model = CommentPost
         fields = ('title', 'text',)
+
+
+
+
