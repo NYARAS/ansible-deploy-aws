@@ -7,13 +7,11 @@ deployer_group: calvine
 deployer_mail: calvineotieno010@gmail.com
 
 # Django admin
-django_user: calvine
-django_mail: calvineotieno010@gmail.com
+
 
 
 # Github Code's Repo URL
-githubuser: NYARAS
-githubpassword: Calvine2015
+
 
 # App Directory
 app_dir: /home/ubuntu/{{deployer_user}}/{{app_name}}
